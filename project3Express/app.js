@@ -9,6 +9,12 @@ const mongoose     = require('mongoose');
 const logger       = require('morgan');
 const path         = require('path');
 
+const session = require('express-session');
+const passport = require('passport');
+
+const cors = require("cors");
+
+require("./config/passport");
 
 mongoose
   .connect('mongodb://localhost/project3express', {useNewUrlParser: true})
@@ -50,9 +56,32 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.locals.title = 'Express - Generated with IronGenerator';
 
 
+app.use(session({
+  secret: "some secret goes here",
+  resave: true,
+  saveUninitialized: true
+}));
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.use(cors({
+  credentials: true,
+  origin: ['http://localhost:3000']
+}));
+// its going to accept requests as long as they come from localhost:3000 which is where I am planning on the running the react app
 
 const index = require('./routes/index');
 app.use('/', index);
 
+const taskRoutes = require("./routes/itemsRoutes");
+app.use("/api", taskRoutes);
+// we will prefix all of our express routes with /api
+//  so that none of our react routes conflict with these routes
+
+const userRoutes = require("./routes/userRoutes");
+app.use("/api", userRoutes);
 
 module.exports = app;
