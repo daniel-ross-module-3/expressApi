@@ -49,6 +49,8 @@ router.post('/items/add-new', (req, res, next) => {
 
 
 router.post('/items/edit/:id', (req, res, next) => {
+
+  console.log(req.params, req.body)
   Item.findByIdAndUpdate(req.params.id, {
     name: req.body.theTitle,
     description: req.body.theDescription,
