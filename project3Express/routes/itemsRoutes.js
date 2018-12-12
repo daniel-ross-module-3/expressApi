@@ -37,7 +37,8 @@ router.post('/items/add-new', (req, res, next) => {
     name: req.body.theTitle,
     description: req.body.theDescription,
     itemCost: req.body.itemCost,
-    retailPrice: req.body.retailPrice
+    retailPrice: req.body.retailPrice,
+    quantity: req.body.quantity
   })
     .then(response => {
       res.json(response);
@@ -55,7 +56,8 @@ router.post('/items/edit/:id', (req, res, next) => {
     name: req.body.theTitle,
     description: req.body.theDescription,
     cost: req.body.itemCost,
-    retailPrice: req.body.retailPrice
+    retailPrice: req.body.retailPrice,
+    quantity: req.body.quantity
   })
     .then((response) => {
       if (response === null) {

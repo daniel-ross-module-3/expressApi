@@ -2,15 +2,19 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
+const Employee = require("../models/Employee");
+
 const User = require('../models/User');
 
 const passport = require('passport');
 
 
 router.post('/signup', (req, res, next) => {
+  console.log(req.body)
   const username = req.body.username;
   const password = req.body.password;
-
+  const companyName = req.body.companyName;
+  // console.log(username);
   User.findOne({ username }, (err, foundUser) => {
 
     if (err) {
@@ -19,7 +23,7 @@ router.post('/signup', (req, res, next) => {
     }
 
     if (foundUser) {
-      res.status(400).json({ message: 'Username taken. Choose another one.' });
+      res.status(412).json({ message: 'Username taken. Choose another one.' });
       return;
     }
 
@@ -28,11 +32,13 @@ router.post('/signup', (req, res, next) => {
 
     const aNewUser = new User({
       username: username,
-      password: hashPass
+      password: hashPass,
+      companyName: companyName,
     });
 
     aNewUser.save(err => {
       if (err) {
+        console.log(err)
         res.status(400).json({ message: 'Saving user to database went wrong.' });
         return;
       }
@@ -55,8 +61,7 @@ router.post('/signup', (req, res, next) => {
 });
 
 
-
-
+// -==--=-==--=-=-=-ends user signup route=--=-=-=-=-=-=
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, theUser, failureDetails) => {
@@ -102,10 +107,17 @@ router.get('/loggedin', (req, res, next) => {
   }
   res.status(500).json({ message: 'Unauthorized' });
 });
+// router.get('/user', (req, res, next) => {
+// req.isAuthenticated() is defined by passport
+//   if (req.isAuthenticated()) {
+//     res.json(req.user);
+//     return;
+//   }
+//   res.status(500).json({ message: 'Unauthorized' });
+// });
 
 
 
 
 
 module.exports = router;
-

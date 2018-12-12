@@ -84,4 +84,7 @@ app.use("/api", taskRoutes);
 const userRoutes = require("./routes/userRoutes");
 app.use("/api", userRoutes);
 
+const employeeRoutes = require("./routes/employeeRoutes");
+app.use("/api", employeeRoutes);
+
 module.exports = app;
