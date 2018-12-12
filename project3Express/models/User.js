@@ -5,7 +5,9 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   username: String,
-  password: String
+  password: String,
+  companyName: String,
+  isDeleted: { type: Boolean, default: false }
 })
 
 

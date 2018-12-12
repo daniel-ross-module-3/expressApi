@@ -8,6 +8,7 @@ const itemSchema = new Schema({
   description: String,
   itemCost: Number,
   retailPrice: Number,
+  quantity: Number,
   // Margin: this.retailPrice - this.Cost,
 })
 
