@@ -6,10 +6,9 @@ const Item = require('../models/Item');
 /* GET home page */
 router.get('/items', (req, res, next) => {
 
-  Item.find()
+  Item.find({ company: req.user._id })
     .then((allTheItems) => {
       res.json(allTheItems)
-  
     })
     .catch((err) => {
       res.json(err);
@@ -38,7 +37,8 @@ router.post('/items/add-new', (req, res, next) => {
     description: req.body.theDescription,
     itemCost: req.body.itemCost,
     retailPrice: req.body.retailPrice,
-    quantity: req.body.quantity
+    quantity: req.body.quantity,
+    company:req.user._id
   })
     .then(response => {
       res.json(response);
