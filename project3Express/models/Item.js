@@ -9,6 +9,7 @@ const itemSchema = new Schema({
   itemCost: Number,
   retailPrice: Number,
   quantity: Number,
+  company: {type: Schema.Types.ObjectId, ref: "User" }
   // Margin: this.retailPrice - this.Cost,
 })
 

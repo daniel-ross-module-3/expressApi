@@ -52,6 +52,18 @@ router.post('/employeeUpdate/:id', (req, res, next) => {
     })
   })
 
+  // =-=--=-=-==-clock in and out routes below =--=-==-=-
+  router.get("/employeeFind/:key",(req,res,next)=>{
+    Employee.findOne({employeeKey:req.params.key})
+    .then((employeeDetail)=>{
+      res.json(employeeDetail)
+    })
+    .catch((err)=>{
+      res.json(err)
+    })
+  })
+
+  
 
 
 module.exports = router;

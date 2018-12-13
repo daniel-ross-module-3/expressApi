@@ -45,17 +45,17 @@ router.post('/signup', (req, res, next) => {
 
       // Automatically log in user after sign up
       // .login() here is actually predefined passport method
-      req.login(aNewUser, (err) => {
+      // req.login(aNewUser, (err) => {
 
-        if (err) {
-          res.status(500).json({ message: 'Login after signup went bad.' });
-          return;
-        }
+      //   if (err) {
+      //     res.status(500).json({ message: 'Login after signup went bad.' });
+      //     return;
+      //   }
 
-        // Send the user's information to the frontend
-        // We can use also: res.status(200).json(req.user);
-        res.json(aNewUser);
-      });
+      //   // Send the user's information to the frontend
+      //   // We can use also: res.status(200).json(req.user);
+      //   res.json(aNewUser);
+      // });
     });
   });
 });
@@ -66,21 +66,21 @@ router.post('/signup', (req, res, next) => {
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, theUser, failureDetails) => {
     if (err) {
-      res.json({ message: 'Something went wrong authenticating user' });
+      res.status(400).json({ message: 'Something went wrong authenticating user' });
       return;
     }
 
     if (!theUser) {
       // "failureDetails" contains the error messages
       // from our logic in "LocalStrategy" { message: '...' }.
-      res.json(failureDetails);
+      res.status(400).json(failureDetails);
       return;
     }
 
     // save user in session
     req.login(theUser, (err) => {
       if (err) {
-        res.json({ message: 'Session save went bad.' });
+        res.status(500).json({ message: "Session save went bad." });
         return;
       }
 
