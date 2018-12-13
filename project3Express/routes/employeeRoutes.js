@@ -54,7 +54,9 @@ router.post('/employeeUpdate/:id', (req, res, next) => {
 
   // =-=--=-=-==-clock in and out routes below =--=-==-=-
   router.get("/employeeFind/:key",(req,res,next)=>{
-    Employee.findOne({employeeKey:req.params.key})
+    //isLoggedIn
+    console.log(req.user)
+    Employee.findOne({ employeeKey: req.params.key, employer:req.user._id})
     .then((employeeDetail)=>{
       res.json(employeeDetail)
     })
@@ -63,8 +65,21 @@ router.post('/employeeUpdate/:id', (req, res, next) => {
     })
   })
 
-  
 
+router.post("/employeeFind/delete/:key", (req, res, next) => {
+  Employee.remove({employeeKey: req.params.key})
+    .then(deletedItem => {
+      if (deletedItem === null) {
+        res.json({ message: "sorry this Item could not be found" });
+        return;
+      }
+
+      res.json([{ message: "Item succesfully deleted" }, deletedItem]);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
 
 module.exports = router;
 
