@@ -23,7 +23,7 @@ router.post('/signup', (req, res, next) => {
     }
 
     if (foundUser) {
-      res.status(412).json({ message: 'Username taken. Choose another one.' });
+      res.status(412).json({ message: 'Username taken. Choose another one.' })
       return;
     }
 
@@ -35,12 +35,13 @@ router.post('/signup', (req, res, next) => {
       password: hashPass,
       companyName: companyName,
     });
+    // res.json(theUser);
 
     aNewUser.save(err => {
       if (err) {
         console.log(err)
         res.status(400).json({ message: 'Saving user to database went wrong.' });
-        return;
+        // res.json(theUser);
       }
 
       // Automatically log in user after sign up
