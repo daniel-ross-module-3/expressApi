@@ -12,7 +12,8 @@ router.post('/employeeCreate', (req, res, next) => {
     payRate: req.body.payRate,
     position: req.body.position,
     employer: req.user._id,
-    shifts: []
+    shifts: [],
+    active: false
 
   })
     .then((employee) => {
@@ -55,7 +56,7 @@ router.post('/employeeUpdate/:id', (req, res, next) => {
   // =-=--=-=-==-clock in and out routes below =--=-==-=-
   router.get("/employeeFind/:key",(req,res,next)=>{
     //isLoggedIn
-    console.log(req.user)
+    // console.log(req.user)
     Employee.findOne({ employeeKey: req.params.key, employer:req.user._id})
     .then((employeeDetail)=>{
       res.json(employeeDetail)
@@ -81,6 +82,59 @@ router.post("/employeeFind/delete/:key", (req, res, next) => {
     });
 });
 
+
+router.post("/clockInAndOut/:id",(req,res,next)=>{
+
+
+  Employee.findById(req.params.id)
+  .then((employee)=>{ 
+      if(!employee.active){
+        //we want to clock them in
+
+        Employee.findByIdAndUpdate(req.params.id, {
+          active: true,
+          currentShift:{ clockIn: new Date()}
+        }, {new: true})
+        .then((employeeInfo)=>{
+          res.json(employeeInfo)
+        })
+        .catch((err)=>{
+          res.json(err)
+        })
+      } else{
+        const shiftOfTheMoment = employee.currentShift;
+        shiftOfTheMoment.clockOut = new Date();
+
+        // const lbah =  shiftOfTheMoment.clockout - shiftOFTheMoment.clockIn
+        // shiftOfTheMoment.duration = lbah;
+
+
+
+        Employee.findByIdAndUpdate(req.params.id,{
+          active:false,
+          currentShift:{},
+          $push: { shifts: shiftOfTheMoment }
+
+
+        }, {new: true}).then((something)=>{
+          res.json(something)
+        }).catch((err)=>{
+          res.json(err)
+        })
+        
+
+      }
+
+  }).catch((err)=>{
+    res.json(err)
+  })
+})
+
+// router.post("/clockOut/:key", (req, res, next) => {
+
+// })
+
 module.exports = router;
+
 
 
