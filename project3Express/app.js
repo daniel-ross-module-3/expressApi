@@ -17,7 +17,9 @@ require("./config/passport");
 
 mongoose.Promise = Promise;
 mongoose
-  .connect('mongodb://localhost/Project3', { useMongoClient: true })
+  //.connect('mongodb://localhost/Project3', { useMongoClient: true })
+  
+  .connect('mongodb://ross22:ross22@ds139934.mlab.com:39934/ima', { useMongoClient: true })
   .then(() => {
     console.log('Connected to Mongo!')
   }).catch(err => {
@@ -68,7 +70,7 @@ app.use(passport.session());
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:3000']
+  origin: ['http://localhost:3000', 'http://172.16.0.215:3000']
 }));
 // its going to accept requests as long as they come from localhost:3000 which is where I am planning on the running the react app
 
