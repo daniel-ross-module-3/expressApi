@@ -7,7 +7,9 @@ const EmployeeSchema = new Schema({
   payRate:Number,
   position:String,
   employer:{type: Schema.Types.ObjectId, ref:"User"},
-  shifts:[{clockIn: Date, clockOut: Date, complete: Boolean }]
+  shifts:[{clockIn: Date, clockOut: Date }],
+  active:Boolean,
+  currentShift:{clockIn: Date, clockOut: Date, duration: Number}
   
 });
 
